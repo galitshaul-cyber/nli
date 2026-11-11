@@ -1,0 +1,2418 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מדריך אינטראקטיבי ואשף לקביעת ערכי הנגשה ופרטיות — הספרייה הלאומית</title>
+  
+  <!-- Fonts: Public Sans & Heebo -->
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       Handbook Style & Design Foundation Tokens
+       ========================================================================== */
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces */
+      --background: #ffffff;
+      --surface-container-low: #f3f2f1;
+      --surface-container: #e8e7e5;
+      --surface-container-high: #dbdad9;
+
+      /* Ink */
+      --on-surface: #0b0c0c;
+      --on-surface-variant: #505a5f;
+
+      /* Rules */
+      --outline: #0b0c0c;
+      --outline-variant: #b1b4b6;
+
+      /* Accents */
+      --primary: #162e51;
+      --on-primary: #ffffff;
+      --primary-container: #d2e2f1;
+      --on-primary-container: #0c2d4a;
+      --secondary: #4c2c92;
+      --tertiary: #1a569e;
+      --error: #d4351c;
+      --on-error: #ffffff;
+
+      /* Semantics */
+      --positive: #00703c;
+      --positive-container: #d4ebd9;
+      --on-positive-container: #003618;
+      --warning: #b25400;
+      --warning-container: #fae2cc;
+      --on-warning-container: #592500;
+
+      /* Typography */
+      --font-headline: 'Public Sans', 'Heebo', sans-serif;
+      --font-body: 'Heebo', 'Public Sans', sans-serif;
+      --font-label: 'Public Sans', 'Heebo', sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+      /* Type scale */
+      --display-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.2rem);
+      --headline-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.5rem);
+      --subhead-size: clamp(1.05rem, 0.98rem + 0.3vw, 1.2rem);
+      --body-size: clamp(0.92rem, 0.88rem + 0.2vw, 1rem);
+      --label-size: 0.8125rem;
+
+      /* Spacing scale */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.25rem;
+      --space-2xl: 3.5rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 200ms;
+
+      /* Shapes & Effects */
+      --rounded: 0;
+      --top-index-rule: 6px solid var(--primary);
+      --inset-rule: 5px solid var(--tertiary);
+      --button-ground: 0 2px 0 #091526;
+      --button-ground-secondary: 0 2px 0 #858686;
+      --focus-yellow: #ffdd00;
+      --focus-ring: 3px solid var(--focus-yellow);
+      --focus-bar: inset 0 0 0 2px var(--on-surface);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.55;
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 0;
+      box-shadow: var(--focus-bar);
+    }
+
+    .app-wrapper {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--space-md) var(--space-md) var(--space-2xl);
+    }
+
+    .handbook-header {
+      border-top: var(--top-index-rule);
+      border-bottom: 2px solid var(--on-surface);
+      padding: var(--space-md) 0;
+      margin-bottom: var(--space-lg);
+    }
+
+    .top-meta-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-sm);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 700;
+      color: var(--on-surface-variant);
+      letter-spacing: 0.03em;
+    }
+
+    .meta-badges {
+      display: flex;
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 2px 8px;
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      border: 1px solid var(--outline-variant);
+    }
+
+    .tag--primary {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      border-color: var(--tertiary);
+    }
+
+    .tag--positive {
+      background: var(--positive-container);
+      color: var(--on-positive-container);
+      border-color: var(--positive);
+    }
+
+    .tag--warning {
+      background: var(--warning-container);
+      color: var(--on-warning-container);
+      border-color: var(--warning);
+    }
+
+    .tag--danger {
+      background: #fde8e8;
+      color: var(--error);
+      border-color: var(--error);
+    }
+
+    .handbook-title {
+      font-family: var(--font-headline);
+      font-size: var(--display-size);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--on-surface);
+      margin-bottom: var(--space-xs);
+    }
+
+    .handbook-subtitle {
+      font-size: var(--subhead-size);
+      color: var(--on-surface-variant);
+      max-width: 80ch;
+      font-weight: 400;
+    }
+
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .metric-card {
+      background: var(--surface-container-low);
+      border-right: var(--inset-rule);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .metric-label {
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+      font-weight: 700;
+    }
+
+    .metric-val {
+      font-family: var(--font-headline);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .metric-desc {
+      font-size: 0.8125rem;
+      color: var(--on-surface);
+    }
+
+    /* Tabs Navigation */
+    .tabs-nav-container {
+      margin-bottom: var(--space-lg);
+      border-bottom: 2px solid var(--outline);
+      background: var(--surface-container-low);
+    }
+
+    .tabs-list {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      gap: 2px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .tab-btn {
+      appearance: none;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      padding: var(--space-md) var(--space-lg);
+      font-family: var(--font-headline);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      transition: background-color var(--dur-micro), color var(--dur-micro);
+    }
+
+    .tab-btn:hover {
+      background: var(--surface-container);
+      color: var(--on-surface);
+    }
+
+    .tab-btn.is-active {
+      background: var(--background);
+      color: var(--primary);
+      border-bottom: 4px solid var(--primary);
+      box-shadow: 0 -2px 0 0 var(--primary);
+    }
+
+    .tab-btn-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      background: var(--primary);
+      color: var(--on-primary);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .tab-btn.is-active .tab-btn-badge {
+      background: var(--tertiary);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.is-active {
+      display: block;
+      animation: fadeIn var(--dur-short) var(--ease-out);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-card {
+      background: var(--background);
+      border: 1px solid var(--outline-variant);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    .section-title {
+      font-family: var(--font-headline);
+      font-size: var(--headline-size);
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .inset-panel {
+      border-right: var(--inset-rule);
+      background: var(--surface-container-low);
+      padding: var(--space-md) var(--space-lg);
+      margin: var(--space-md) 0;
+    }
+
+    .grid-2col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .grid-3col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .field-group {
+      margin-bottom: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-label {
+      font-family: var(--font-headline);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .field-hint {
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+    }
+
+    .field-input, .field-select, .field-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--on-surface);
+      background: var(--background);
+      border: 2px solid var(--outline);
+      border-radius: var(--rounded);
+      transition: border-color var(--dur-micro);
+    }
+
+    .field-input:focus, .field-select:focus, .field-textarea:focus {
+      outline: var(--focus-ring);
+      outline-offset: 0;
+      box-shadow: var(--focus-bar);
+    }
+
+    .field-select {
+      cursor: pointer;
+      appearance: auto;
+      background-color: var(--background);
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      padding: 8px 12px;
+      background: var(--surface-container-low);
+      border: 1px solid var(--outline-variant);
+      margin-bottom: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-item:hover {
+      background: var(--surface-container);
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .checkbox-label-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .checkbox-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--on-surface);
+    }
+
+    .checkbox-sub {
+      font-size: 0.8rem;
+      color: var(--on-surface-variant);
+    }
+
+    .btn {
+      font-family: var(--font-headline);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      background: var(--primary);
+      color: var(--on-primary);
+      box-shadow: var(--button-ground);
+      transition: transform var(--dur-micro), background-color var(--dur-micro);
+      border-radius: var(--rounded);
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--tertiary);
+    }
+
+    .btn:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    .btn--secondary {
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      border: 1px solid var(--outline);
+      box-shadow: var(--button-ground-secondary);
+    }
+
+    .btn--secondary:hover {
+      background: var(--surface-container-high);
+    }
+
+    .btn--sm {
+      padding: 6px 12px;
+      font-size: 0.8125rem;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      align-items: center;
+    }
+
+    .result-card {
+      border: 2px solid var(--outline);
+      background: var(--surface-container-low);
+      padding: var(--space-lg);
+      margin-top: var(--space-lg);
+    }
+
+    .result-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-sm);
+      border-bottom: 2px solid var(--outline);
+    }
+
+    .status-badge-lg {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 8px 16px;
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: 1.15rem;
+    }
+
+    .status-badge-lg.status--open {
+      background: var(--positive-container);
+      color: var(--on-positive-container);
+      border: 2px solid var(--positive);
+    }
+
+    .status-badge-lg.status--building {
+      background: var(--warning-container);
+      color: var(--on-warning-container);
+      border: 2px solid var(--warning);
+    }
+
+    .status-badge-lg.status--blocked {
+      background: #fde8e8;
+      color: var(--error);
+      border: 2px solid var(--error);
+    }
+
+    .code-box {
+      background: #111b27;
+      color: #f1f5f9;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      direction: ltr;
+      text-align: left;
+      padding: var(--space-md);
+      border: 1px solid #334155;
+      overflow-x: auto;
+      margin: var(--space-sm) 0;
+      line-height: 1.6;
+    }
+
+    .code-box .marc-tag {
+      color: #38bdf8;
+      font-weight: bold;
+    }
+
+    .code-box .marc-sub {
+      color: #f472b6;
+      font-weight: bold;
+    }
+
+    .code-box .marc-val {
+      color: #fde047;
+    }
+
+    .ruled-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+      font-size: 0.875rem;
+      margin: var(--space-md) 0;
+    }
+
+    .ruled-table th {
+      background: var(--surface-container-low);
+      color: var(--primary);
+      font-family: var(--font-headline);
+      font-weight: 800;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--outline);
+    }
+
+    .ruled-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--outline-variant);
+      vertical-align: top;
+    }
+
+    .ruled-table tr:hover td {
+      background: var(--surface-container-low);
+    }
+
+    .flowchart-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      position: relative;
+    }
+
+    .flow-node {
+      border: 2px solid var(--outline);
+      background: var(--background);
+      padding: var(--space-md) var(--space-lg);
+      position: relative;
+      cursor: pointer;
+      transition: background-color var(--dur-micro), border-color var(--dur-micro);
+    }
+
+    .flow-node:hover {
+      background: var(--surface-container-low);
+      border-color: var(--tertiary);
+    }
+
+    .flow-node.is-active-step {
+      border-right: 8px solid var(--tertiary);
+      background: var(--surface-container-low);
+    }
+
+    .flow-node-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: 4px;
+    }
+
+    .flow-step-num {
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      color: var(--on-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.75rem;
+    }
+
+    .flow-node-title {
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+
+    .flow-branches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-sm);
+    }
+
+    .branch-pill {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      background: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+    }
+
+    .branch-pill--yes {
+      background: var(--positive-container);
+      color: var(--on-positive-container);
+      border-color: var(--positive);
+    }
+
+    .branch-pill--no {
+      background: var(--warning-container);
+      color: var(--on-warning-container);
+      border-color: var(--warning);
+    }
+
+    .case-card {
+      border: 1px solid var(--outline-variant);
+      background: var(--background);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      height: 100%;
+    }
+
+    .case-card:hover {
+      border-color: var(--primary);
+    }
+
+    .case-title {
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: var(--primary);
+      color: var(--on-primary);
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      border-right: 4px solid var(--focus-yellow);
+      display: none;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      animation: toastIn var(--dur-short) var(--ease-out);
+    }
+
+    @keyframes toastIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .app-wrapper {
+        padding: var(--space-sm);
+      }
+      .tab-btn {
+        padding: var(--space-sm) var(--space-md);
+        font-size: 0.85rem;
+      }
+      .grid-2col, .grid-3col {
+        grid-template-columns: 1fr;
+      }
+      .handbook-title {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+
+  <!-- Handbook Header / Masthead -->
+  <header class="handbook-header">
+    <div class="top-meta-bar">
+      <div class="meta-badges">
+        <span class="tag tag--primary"><i data-lucide="building-2" style="width:14px;height:14px;"></i> הספרייה הלאומית — אגף הארכיונים</span>
+        <span class="tag">תקן MARC 21 ועלמא</span>
+        <span class="tag tag--positive">נוהל מעודכן 2026</span>
+      </div>
+      <div>מדריך עבודה והנחיות מקצועיות למקטלגים</div>
+    </div>
+    
+    <h1 class="handbook-title">מדריך אינטראקטיבי ואשף לקביעת ערכי הנגשה ופרטיות</h1>
+    <p class="handbook-subtitle">
+      כלי סיוע מקיף למקטלגים ולארכיונאים בספרייה הלאומית ובארכיוני ישראל (רא"י). קביעת רמות חשיפה, ניהול סיכוני פגיעה בפרטיות, חוק הגנת הפרטיות, יישום שדות 952 ו-903 והתמודדות אתית עם חומרי עבר ותיעוד רגיש.
+    </p>
+  </header>
+
+  <!-- Key Metrics Strip -->
+  <section class="metrics-bar" aria-label="נתוני מפתח במדיניות">
+    <div class="metric-card">
+      <span class="metric-label">כלל 100 השנים</span>
+      <span class="metric-val">לפני 1926</span>
+      <span class="metric-desc">חומרים שנוצרו לפני 100 שנה ויותר פטורים מבדיקת פרטיות ("אין מגבלת פרטיות").</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-label">סף סיכון 15 השנים</span>
+      <span class="metric-val">2011–2026</span>
+      <span class="metric-desc">חומר שלא נבדק מ-15 השנים האחרונות נחסם כליל (Staff only) בשל סיכון מוגבר.</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-label">רשימת ערכי פרטיות מבוקרת</span>
+      <span class="metric-val">15 ערכים</span>
+      <span class="metric-desc">שדה 952 תת-שדה f בקטלוג עלמא — סיווג מדויק ומבוקר לפי מהות המידע.</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-label">3 רמות הנגשה מוסדיות</span>
+      <span class="metric-val">פתוח / בניין / חסום</span>
+      <span class="metric-desc">הנגשה דיגיטלית מלאה, עיון פיזי בבניין הספרייה בלבד, או חסימה מוחלטת לצוות בלבד.</span>
+    </div>
+  </section>
+
+  <!-- Tabs Navigation (Wizard is LAST TAB) -->
+  <nav class="tabs-nav-container" aria-label="לשוניות המדריך">
+    <ul class="tabs-list" role="tablist">
+      <li role="presentation">
+        <button type="button" class="tab-btn is-active" id="tab-btn-1" role="tab" aria-selected="true" aria-controls="tab-pane-1" onclick="switchTab(1)">
+          <span class="tab-btn-badge">1</span>
+          <span>מדיניות ועקרונות יסוד</span>
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" class="tab-btn" id="tab-btn-2" role="tab" aria-selected="false" aria-controls="tab-pane-2" onclick="switchTab(2)">
+          <span class="tab-btn-badge">2</span>
+          <span>מדריך שדות MARC 21 וערכי קטלוג</span>
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" class="tab-btn" id="tab-btn-3" role="tab" aria-selected="false" aria-controls="tab-pane-3" onclick="switchTab(3)">
+          <span class="tab-btn-badge">3</span>
+          <span>תרשים זרימה ומבחני החלטה</span>
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" class="tab-btn" id="tab-btn-4" role="tab" aria-selected="false" aria-controls="tab-pane-4" onclick="switchTab(4)">
+          <span class="tab-btn-badge">4</span>
+          <span>מקרים מהשטח ודילמות אתיות</span>
+        </button>
+      </li>
+      <li role="presentation">
+        <!-- Wizard tab is placed as the LAST TAB -->
+        <button type="button" class="tab-btn" id="tab-btn-5" role="tab" aria-selected="false" aria-controls="tab-pane-5" onclick="switchTab(5)">
+          <span class="tab-btn-badge">5</span>
+          <span><i data-lucide="sparkles" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> אשף קביעת ערכי הנגשה ופרטיות</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- =========================================================================
+       TAB 1: Policy & Core Principles
+       ========================================================================= -->
+  <section id="tab-pane-1" class="tab-pane is-active" role="tabpanel" aria-labelledby="tab-btn-1">
+    
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title"><i data-lucide="shield-check" style="width:22px;height:22px;"></i> מדיניות הגנת הפרטיות בספרייה הלאומית — עקרונות המפתח</h2>
+        <span class="tag tag--primary">מסמך מדיניות מאת עו"ד נועם סולן</span>
+      </div>
+
+      <p style="margin-bottom: var(--space-md);">
+        מטרת המדיניות היא ליצור איזון עדין ואחראי בין שני עקרונות יסוד: 
+        <strong>חופש המידע, תיעוד היסטורי ושימור זיכרון הדורות</strong> מחד, 
+        לבין <strong>ההגנה על כבוד האדם, שמו הטוב וצנעת הפרט</strong> של מושאי התיעוד מאידך. 
+        הארכיונאי והמקטלג הם שומרי הסף המרכזיים המיישמים עקרונות אלה בפועל בעת הרישום בקטלוג עלמא.
+      </p>
+
+      <div class="inset-panel">
+        <strong>המבחן המהותי-נזיקי (מבחן האדם הסביר):</strong>
+        רישום ערכי פרטיות בתיק אינו פעולה טכנית לפי סוג מסמך בלבד, אלא נגזר מהשאלה: 
+        <em>"האם פרסום המידע עלול לפגוע באופן משמעותי במושא המידע (Data Subject) — כגון השפלה, ביזוי, חרדה, פגיעה במוניטין, מקור פרנסה, סיכון פיזי או צנעת הפרט?"</em>
+      </div>
+
+      <h3 style="font-size:1.15rem; font-weight:800; color:var(--primary); margin: var(--space-lg) 0 var(--space-sm);">
+        שלוש רמות ההנגשה הנגזרות מערכי הפרטיות
+      </h3>
+
+      <div class="grid-3col">
+        <div style="border: 2px solid var(--positive); background: var(--positive-container); padding: var(--space-md);">
+          <div style="display:flex; align-items:center; gap:var(--space-xs); font-weight:800; color:var(--on-positive-container); margin-bottom:4px;">
+            <i data-lucide="globe" style="width:18px;height:18px;"></i>
+            פתוח באופן מלא (Open Full)
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-positive-container);">
+            החומרים זמינים הן לעיון פיזי בבניין הספרייה והן לצפייה דיגיטלית חופשית באינטרנט מכל מקום בעולם (בכפוף למצב זכויות יוצרים).
+          </p>
+          <div style="margin-top:var(--space-sm); font-size:0.8rem; font-weight:700;">
+            מתאים ל: חומרים לפני 100 שנה, פריטים שפורסמו בעבר, תיקים ללא מידע רגיש, הסכמה בכתב.
+          </div>
+        </div>
+
+        <div style="border: 2px solid var(--warning); background: var(--warning-container); padding: var(--space-md);">
+          <div style="display:flex; align-items:center; gap:var(--space-xs); font-weight:800; color:var(--on-warning-container); margin-bottom:4px;">
+            <i data-lucide="building" style="width:18px;height:18px;"></i>
+            פתוח לעיון פיזי בלבד (Building Only)
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-warning-container);">
+            התיק פתוח לעיון של חוקרים בבניין הספרייה הלאומית בלבד. החומר <strong>חסום לגישה דיגיטלית מחוץ לבניין</strong>.
+          </p>
+          <div style="margin-top:var(--space-sm); font-size:0.8rem; font-weight:700;">
+            מתאים ל: תיקים שנוצרו לפני מעל 15 שנה ולא נבדקה בהם פרטיות (היקף חשיפה נמוך שאינו מהווה פרסום רחב).
+          </div>
+        </div>
+
+        <div style="border: 2px solid var(--error); background: #fde8e8; padding: var(--space-md);">
+          <div style="display:flex; align-items:center; gap:var(--space-xs); font-weight:800; color:var(--error); margin-bottom:4px;">
+            <i data-lucide="lock" style="width:18px;height:18px;"></i>
+            חסום לעיון (Staff Only)
+          </div>
+          <p style="font-size:0.85rem; color:var(--error);">
+            חסום לצפייה באינטרנט, חסום לצפייה בבניין הספרייה, וחסום לעיון פיזי של הקהל (Not for loan). גישה לצוות עובדים מורשה בלבד.
+          </p>
+          <div style="margin-top:var(--space-sm); font-size:0.8rem; font-weight:700;">
+            מתאים ל: תיק שנבדק ונמצא בו מידע אישי רגיש, או תיק שלא נבדק ונוצר ב-15 השנים האחרונות.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Rules interactive matrix -->
+    <div class="section-card">
+      <div class="section-header">
+        <h3 class="section-title"><i data-lucide="check-square" style="width:20px;height:20px;"></i> כללי מפתח בהכרעת פרטיות</h3>
+        <span class="field-hint">לחצו על הכלל להרחבה וצפייה בדוגמאות</span>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Rule 1 -->
+        <div class="flow-node" onclick="toggleDetails('rule-1')">
+          <div class="flow-node-header">
+            <span class="flow-node-title">1. כלל 100 השנים (חומרים היסטוריים)</span>
+            <span class="tag tag--positive">פטור מפרטיות</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            כל החומרים בתיק נוצרו לפני 100 שנים ויותר (נוצרו עד 1926 כולל).
+          </p>
+          <div id="rule-1" style="display:none; margin-top:var(--space-sm); font-size:0.85rem; border-top:1px solid var(--outline-variant); padding-top:var(--space-xs);">
+            <strong>הנחיית רישום:</strong> יירשם הערך <code>אין מגבלת פרטיות</code> בשדה 952$f. הספרייה הלאומית קבעה חזקה לפיה בחלוף מאה שנה הסיכון לפגיעה באנשים חיים אינו קיים, למעט מקרים נדירים של חסיון ביטחוני או צו שיפוטי קבוע.
+          </div>
+        </div>
+
+        <!-- Rule 2 -->
+        <div class="flow-node" onclick="toggleDetails('rule-2')">
+          <div class="flow-node-header">
+            <span class="flow-node-title">2. כלל 15 השנים לתיקים שלא נבדקו</span>
+            <span class="tag tag--danger">רמת סיכון גבוהה</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            תיקים שלא נבדקו משיקולי עלות/תועלת (ארכיונים עצומי היקף) שנוצרו ב-15 השנים האחרונות.
+          </p>
+          <div id="rule-2" style="display:none; margin-top:var(--space-sm); font-size:0.85rem; border-top:1px solid var(--outline-variant); padding-top:var(--space-xs);">
+            <strong>הנחיית רישום:</strong> יירשם הערך <code>פרטיות מידע שטרם נבדק ונוצר ב-15 השנים האחרונות</code>. התיק נחסם כליל (Staff only) גם בבניין וגם ברשת. חומר ישן יותר מ-15 שנה שלא נבדק יקבל <code>לא נבדקה פרטיות</code> ויונגש בבניין בלבד.
+          </div>
+        </div>
+
+        <!-- Rule 3 -->
+        <div class="flow-node" onclick="toggleDetails('rule-3')">
+          <div class="flow-node-header">
+            <span class="flow-node-title">3. פטירת מושא המידע</span>
+            <span class="tag tag--positive">פקיעת הזכות</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            הזכות להגנת הפרטיות מוענקת בחיי האדם בלבד ופוקעת במותו.
+          </p>
+          <div id="rule-3" style="display:none; margin-top:var(--space-sm); font-size:0.85rem; border-top:1px solid var(--outline-variant); padding-top:var(--space-xs);">
+            <strong>חריג קריטי:</strong> יש לנהוג זהירות רבה כאשר המידע על הנפטר משליך ישירות על שאריו ובני משפחתו החיים: למשל ענייני אימוץ, ממזרות, מחלות גנטיות משפחתיות או תצלומים משפילים ומבזים. אם כל מושאי המידע נפטרו ואין פגיעה במשפחה — נרשום <code>אין מגבלת פרטיות</code>.
+          </div>
+        </div>
+
+        <!-- Rule 4 -->
+        <div class="flow-node" onclick="toggleDetails('rule-4')">
+          <div class="flow-node-header">
+            <span class="flow-node-title">4. תאגידים, גופים ומוסדות ציבור</span>
+            <span class="tag tag--positive">ללא זכות פרטיות</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            לתאגידים, חברות, מפלגות ועמותות אין זכות לפרטיות לפי חוק הגנת הפרטיות.
+          </p>
+          <div id="rule-4" style="display:none; margin-top:var(--space-sm); font-size:0.85rem; border-top:1px solid var(--outline-variant); padding-top:var(--space-xs);">
+            <strong>יישום:</strong> פרוטוקולים מוסדיים כלליים, מאזנים תאגידיים, דוחות פעילות של גופים — נרשום <code>אין מגבלת פרטיות</code>. שימו לב: אם הפרוטוקול של התאגיד עוסק בשמות עובדים פרטיים, דיוני משמעת או תלונות אישיות, חלה הגנת הפרטיות על האדם הבודד!
+          </div>
+        </div>
+
+        <!-- Rule 5 -->
+        <div class="flow-node" onclick="toggleDetails('rule-5')">
+          <div class="flow-node-header">
+            <span class="flow-node-title">5. פריטים שפורסמו בעבר בוודאות</span>
+            <span class="tag tag--positive">פרסום חוזר</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            חומרים שכבר הועמדו לרשות הרבים בעבר: כרזות, עיתונים, ספרים, תוכניות אירועים.
+          </p>
+          <div id="rule-5" style="display:none; margin-top:var(--space-sm); font-size:0.85rem; border-top:1px solid var(--outline-variant); padding-top:var(--space-xs);">
+            <strong>יישום:</strong> פריטי אפמרה ודברי דפוס שהופצו לציבור אינם כפופים למגבלת פרטיות כי אלמנט הסודיות אינו קיים בהם. יירשם <code>אין מגבלת פרטיות</code>.
+          </div>
+        </div>
+
+        <!-- Rule 6 -->
+        <div class="flow-node" onclick="toggleDetails('rule-6')">
+          <div class="flow-node-header">
+            <span class="flow-node-title">6. כלל 20 השנים לקטינים ונתונים אישיים</span>
+            <span class="tag tag--warning">פרספקטיבת זמן</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            הבחנה בין נתונים אישיים עדכניים לבין מסמכים ותמונות היסטוריות.
+          </p>
+          <div id="rule-6" style="display:none; margin-top:var(--space-sm); font-size:0.85rem; border-top:1px solid var(--outline-variant); padding-top:var(--space-xs);">
+            <strong>קטינים:</strong> ערך "פרטיות קטינים" יסומן רק אם מושא המידע הוא עדיין קטין כיום (נוצר ב-20 שנה האחרונות). אם המצולם כיום בוגר, אין סיבה לחסום אלא אם מדובר בעירום.<br>
+            <strong>נתונים אישיים:</strong> טלפונים או כתובות ישנות מלפני 30 שנה אינם מסכנים גניבת זהות; לעומת זאת תעודות זהות וחשבונות בנק עדכניים יסומנו ב"פרטיות נתונים אישיים".
+          </div>
+        </div>
+      </div>
+
+      <!-- Ethics Section -->
+      <div class="inset-panel" style="margin-top:var(--space-lg);">
+        <h4 style="font-weight:800; color:var(--primary); margin-bottom:4px;">
+          <i data-lucide="heart-handshake" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>
+          דגשים אתיים מחומרי תיעוד רגישים (מדריך האתיקה לאירועי 7 באוקטובר ומלחמה):
+        </h4>
+        <ul style="padding-right: var(--space-md); font-size:0.875rem;">
+          <li><strong>ההבחנה בין איסוף לבין הנגשה:</strong> חשוב לאסוף ולשמר חומרים היסטוריים ונדיפים גם כאשר יש מניעה ברורה להנגישם כעת. עצם ההפקדה אינה מחייבת הנגשה מיידית.</li>
+          <li><strong>מושאי התיעוד כבעלי זכות מתמשכת:</strong> עדים, מצולמים וקהילות בסיכון חברתי-פוליטי אינם אובייקטים פסיביים. יש להגן עליהם מהפללה עצמית, נידוי או נקם.</li>
+          <li><strong>אנונימיזציה והתממה:</strong> כשיש עניין היסטורי בחומר המכיל מידע אישי פוגעני, ניתן ליצור גרסה מחקרית עם השחרת שמות ופרטים מזהים (Redaction).</li>
+          <li><strong>חומרים מרובי צדדים שלישיים:</strong> צילומי מסך והקלטות שבהם מוזכרים צדדים שלא נתנו הסכמתם להפקדה — ברירת המחדל היא <strong>אי-הנגשה</strong>.</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================================
+       TAB 2: MARC 21 Fields & Cataloging Guidelines
+       ========================================================================= -->
+  <section id="tab-pane-2" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-2">
+    
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title"><i data-lucide="database" style="width:22px;height:22px;"></i> שדה 952 — מגבלות פרטיות וחיסיון בקטלוג עלמא</h2>
+        <span class="tag tag--primary">שדה מקומי ייעודי בספרייה הלאומית</span>
+      </div>
+
+      <p style="margin-bottom: var(--space-md);">
+        שדה <strong>952</strong> הוא שדה מקומי שמטרתו ניהול ובקרת מגבלות הפרטיות והחיסיון ברמת התיק הארכיוני. 
+        השדה נרשם <strong>ללא אינדיקטורים</strong> וכולל שני תתי-שדות מרכזיים:
+      </p>
+
+      <div class="grid-2col">
+        <div class="inset-panel">
+          <div style="font-weight:800; color:var(--primary); margin-bottom:4px;">תת-שדה f: ערך פרטיות מבוקר</div>
+          <p style="font-size:0.85rem;">
+            בחירה מתוך <strong>רשימה סגורה בלבד</strong>. ערך זה קובע במערכת את רמת ההנגשה של התיק.
+          </p>
+          <div class="code-box">952 $$f אין מגבלת פרטיות</div>
+        </div>
+
+        <div class="inset-panel">
+          <div style="font-weight:800; color:var(--primary); margin-bottom:4px;">תת-שדה i: ערך חיסיון והסכם</div>
+          <p style="font-size:0.85rem;">
+            תנאי חיסיון חוזי, צו בית משפט או ביטחון, כולל ציון מועד פקיעה: <code>חיסיון [גורם] עד [YYYY]</code>.
+          </p>
+          <div class="code-box">952 $$f אין מגבלת פרטיות $$i חיסיון מפקיד עד 2039</div>
+        </div>
+      </div>
+
+      <!-- Searchable Controlled Values Table -->
+      <div style="margin-top: var(--space-lg);">
+        <div class="section-header" style="border-bottom:none; margin-bottom:var(--space-xs);">
+          <h3 style="font-size:1.1rem; font-weight:800; color:var(--primary);">טבלת הערכים המבוקרים המלאה (952$$f) והשפעתם</h3>
+          <input type="text" id="filter-952-input" class="field-input" style="max-width:300px; padding:6px 10px;" placeholder="חפש ערך פרטיות..." oninput="filter952Table(this.value)">
+        </div>
+
+        <table class="ruled-table" id="table-952">
+          <thead>
+            <tr>
+              <th style="width:24%;">שם הערך המבוקר ($$f)</th>
+              <th style="width:18%;">סטטוס הנגשה נגזר</th>
+              <th style="width:38%;">הגדרה ושימוש</th>
+              <th style="width:20%;">דוגמה אופיינית</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>אין מגבלת פרטיות</strong></td>
+              <td><span class="tag tag--positive">פתוח באופן מלא</span></td>
+              <td>נוצר לפני 100+ שנה; אינו כולל אדם (תאגיד); פורסם בעבר; כל המושאים נפטרו; או שניתנה הסכמה בכתב.</td>
+              <td>כרזות מ-1970, התכתבות עסקית מ-1910, תצלום רחוב ללא זיהוי.</td>
+            </tr>
+            <tr>
+              <td><strong>לא נבדקה פרטיות</strong></td>
+              <td><span class="tag tag--warning">עיון בבניין בלבד</span></td>
+              <td>חומר שנוצר לפני יותר מ-15 שנה ולא נבדק פרטנית בשל היקף עצום (שיקולי עלות-תועלת). חסום ברשת.</td>
+              <td>אוסף של 50,000 מסמכים מנהליים מקיבוץ בשנים 1950–1990.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות מידע שטרם נבדק ונוצר ב-15 השנים האחרונות</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>חומר מהשנים האחרונות שטרם נבדק פרטנית. חסום כליל עקב רמת סיכון חמורה לפגיעה בפרטיות.</td>
+              <td>תיקיות מחשב שנמסרו בהפקדה דיגיטלית מהשנים 2018–2024.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות מידע רגיש</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>ערך גנרי למידע שפרסומו יגרום לפגיעה במוניטין, השפלה, ביזוי, צנעת הפרט, או כאשר לא מעוניינים לפרט.</td>
+              <td>התכתבות אישית שבה אדם חושף סוד מביך או משבר משפחתי.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות נתונים אישיים</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>פרטי זיהוי עדכניים (מ-20 השנים האחרונות) המאפשרים שימוש לרעה או גניבת זהות: ת.ז., חשבונות בנק, כתובת, טלפון.</td>
+              <td>טפסי הרשמה הכוללים מספרי זהות, כרטיסי אשראי או פרטי בנק.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות מידע רפואי</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>מידע על מחלות גופניות או נפשיות, טיפולים, חוות דעת פסיכיאטריות, בדיקות גנטיות ואשפוזים.</td>
+              <td>תיק רפואי של חבר קיבוץ, מכתב שחרור מבית חולים פסיכיאטרי.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות מידע סוציאלי (רווחה)</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>חינוך מיוחד, סיוע סוציאלי וכלכלי, הרשעות פליליות, תיקי נוער ושירותי מבחן.</td>
+              <td>דוחות עובדת סוציאלית, בקשות לסיוע כספי לרשויות הרווחה.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות מידע פיננסי</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>דפי חשבון בנק, חובות כספיים, דוחות מס הכנסה, פירוט תשלומים ומצב כלכלי אישי.</td>
+              <td>תיק חקירה של הוצאה לפועל, תדפיסי חשבון בנק אישיים.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות מסמכים משפטיים</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>חיסיון עו"ד-לקוח, תצהירים חסויים, הסכמי פשרה משפחתיים, כתבי תביעה שלא פורסמו.</td>
+              <td>חוות דעת משפטית פנימית, התכתבות בין עורך דין ללקוחו.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות מסמכי העסקה</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>חוזי עבודה, תלושי שכר, דיוני משמעת, תלונות עובדים, מכתבי פיטורין והערכות עובדים.</td>
+              <td>פרוטוקול ועדת משמעת של עובד, מכתב פיטורין מנומק.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות קטינים</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>מידע ותמונות של קטינים (מתחת לגיל 18) מ-20 השנים האחרונות בלבד.</td>
+              <td>תמונות של ילדי בית ספר מאירוע בשנת 2015 עם שמות מלאים.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות לימוד והוראה</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>ציונים, בקשות למלגות, הערכות אקדמיות על סטודנטים, תעודות לימודים וגליונות ציונים.</td>
+              <td>מחברת בחינה של סטודנט עם הערות אישיות, מכתבי המלצה חסויים.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות עירום</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>תצלום שבו אדם ניתן לזיהוי ומופיע בעירום מלא או חלקי, גם אם צולם במרחב ציבורי.</td>
+              <td>תצלומי רחצה בעירום, תצלומי בדיקה רפואית, כל תמונת עירום של קטין.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות לשון הרע / מידע פוגעני</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>אמירות פוגעניות, האשמות חמורות, הכפשות וביזוי ללא תלות באמיתותן.</td>
+              <td>מכתב הלשנה פנימי, השמצה אישית חריפה בין עמיתים.</td>
+            </tr>
+            <tr>
+              <td><strong>פרטיות יחסי אמון</strong></td>
+              <td><span class="tag tag--danger">חסום לעיון (Staff Only)</span></td>
+              <td>מידע שנמסר במסגרת יחסי אמון מקצועיים (רופא-מטופל, פסיכולוג, צלם סטודיו פרטי, מרצה-סטודנט).</td>
+              <td>ארכיון של צלם מסחרי הכולל צילומי דיוקן פרטיים שהוזמנו בתשלום.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Related MARC Fields -->
+    <div class="section-card">
+      <div class="section-header">
+        <h3 class="section-title"><i data-lucide="list-tree" style="width:20px;height:20px;"></i> שדות MARC 21 נלווים ברישום ארכיוני בספרייה הלאומית</h3>
+        <span class="tag">כללי הרישום הרשמיים</span>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Field 903 -->
+        <div style="border:1px solid var(--outline-variant); padding:var(--space-md);">
+          <div style="font-weight:800; color:var(--primary); font-size:1.05rem;">שדה 903: תנאי גישה (Access Rights)</div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant); margin-bottom:4px;">
+            מעודכן בתיאום עם צוות מטא-דטה וזכויות יוצרים. כולל גישה, פרופיל דיגיטלי וזכויות יוצרים.
+          </p>
+          <ul style="font-size:0.85rem; padding-right:var(--space-md);">
+            <li><strong>$$a תנאי גישה:</strong> <code>No restrictions;</code> / <code>Library premises only;</code> / <code>Staff only;</code></li>
+            <li><strong>$$b פרופיל גישה:</strong> <code>000000001</code> (אינטרנט+הורדה) | <code>000000008</code> (בניין בלבד) | <code>000000018</code> (צוות בלבד).</li>
+            <li><strong>$$c מצב זכויות:</strong> <code>Public domain</code> / <code>In copyright</code> / <code>Copyright status not determined</code>.</li>
+            <li><strong>$$d כלל זכויות:</strong> <code>Over 70 years from author death date</code> / <code>No copyright analysis</code>.</li>
+          </ul>
+          <div class="code-box">903 $$a Staff only; $$b 000000018 $$c In copyright $$d Protected by privacy policy</div>
+        </div>
+
+        <!-- Field 093 -->
+        <div style="border:1px solid var(--outline-variant); padding:var(--space-md);">
+          <div style="font-weight:800; color:var(--primary); font-size:1.05rem;">שדה 093: סימול (סיגנטורה) מקומי</div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant); margin-bottom:4px;">
+            מזהה ייחודי של התיק. תחיליות מקובלות בספרייה:
+          </p>
+          <ul style="font-size:0.85rem; padding-right:var(--space-md);">
+            <li><strong>מחלקת ארכיונים:</strong> <code>ARC. 4* NNNN NN NNNN</code> או <code>ARC. 4* NNNN / NN</code>.</li>
+            <li><strong>נולד דיגיטלית (Born-Digital):</strong> <code>D-NNNNN-NNN-NNNNN</code>.</li>
+            <li><strong>אוספים קטנים (Varia):</strong> <code>V NNNN</code>. תצלומים: <code>TM</code>.</li>
+            <li><strong>תתי-שדות בעלמא:</strong> <code>$$c</code> סימול | <code>$$d</code> שם אוסף בעברית (ללא נקודה בסוף!).</li>
+          </ul>
+          <div class="code-box">093 $$c ARC. 4* 1502 01 0001 $$d ארכיון משה דוד גאון</div>
+        </div>
+
+        <!-- Field 500 WARNING -->
+        <div style="border:1px solid var(--outline-variant); padding:var(--space-md);">
+          <div style="font-weight:800; color:var(--error); font-size:1.05rem;">
+            <i data-lucide="alert-triangle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>
+            שדה 500: הערה כללית — אזהרה חשובה!
+          </div>
+          <p style="font-size:0.85rem; margin-top:4px;">
+            <strong>שדה 500 גלוי למשתמשי הקצה.</strong> בספרייה הלאומית <strong>אין לרשום בשדה זה</strong> הערות על מצב זכויות יוצרים, תנאי הנגשה או הגבלות פרטיות!<br>
+            <strong>תקין:</strong> <code>500 $$a תיק זה נשמר במקור בקלסר עבה ועבר סידור מחדש ב-2012</code>.<br>
+            <strong>פסול:</strong> <s>500 $$a סגור לקהל עקב זכויות יוצרים</s> (יש להשתמש בשדות 903 ו-952).
+          </p>
+        </div>
+
+        <!-- Field 520 & 999 -->
+        <div style="border:1px solid var(--outline-variant); padding:var(--space-md);">
+          <div style="font-weight:800; color:var(--primary); font-size:1.05rem;">שדות 520 (אזהרת תוכן) ו-999</div>
+          <p style="font-size:0.85rem; margin-top:4px;">
+            <strong>שדה 520 אינדיקטור 4 (Content Advice):</strong> התרעה על תכנים קשים וטראומטיים:<br>
+            <code>520 4 # $$a עלול להכיל תיאורים קשים</code><br>
+            <strong>שדה 999 סוג חומר מקומי:</strong> שדה חובה לניהול הצפיין הדיגיטלי:<br>
+            <code>999 $$a ARCHIVE</code>
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Interactive MARC Builder -->
+      <div class="inset-panel" style="margin-top:var(--space-lg);">
+        <h4 style="font-weight:800; color:var(--primary); margin-bottom:var(--space-xs);">
+          <i data-lucide="wrench" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>
+          מחולל שורות MARC 21 מהיר לקטלוג
+        </h4>
+        <div class="grid-2col" style="align-items:end; margin-bottom:var(--space-sm);">
+          <div class="field-group" style="margin-bottom:0;">
+            <label class="field-label" for="quick-field-sel">בחר שדה לבנייה:</label>
+            <select id="quick-field-sel" class="field-select" onchange="updateQuickMarcBuilder()">
+              <option value="952">שדה 952 (פרטיות וחיסיון)</option>
+              <option value="903">שדה 903 (תנאי גישה ופרופיל)</option>
+              <option value="520_4">שדה 520 אינדיקטור 4 (אזהרת תוכן)</option>
+              <option value="093">שדה 093 (סימול מקומי בעלמא)</option>
+            </select>
+          </div>
+          <div id="quick-field-controls" style="display:flex; gap:var(--space-sm); flex-wrap:wrap;">
+            <!-- dynamic controls -->
+          </div>
+        </div>
+
+        <div id="quick-marc-output" class="code-box">952 $$f אין מגבלת פרטיות</div>
+        <div class="btn-row">
+          <button type="button" class="btn btn--sm" onclick="copyQuickMarc()"><i data-lucide="copy" style="width:14px;height:14px;"></i> העתק שורה</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================================
+       TAB 3: Decision Flowchart & Risk Assessment
+       ========================================================================= -->
+  <section id="tab-pane-3" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-3">
+    
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title"><i data-lucide="git-branch" style="width:22px;height:22px;"></i> תרשים זרימה אינטראקטיבי לקבלת החלטות הנגשה ופרטיות</h2>
+        <span class="tag tag--primary">מפת החלטה צעד-אחר-צעד</span>
+      </div>
+
+      <p style="margin-bottom: var(--space-md);">
+        תרשים זה משקף את היררכיית הבדיקה המקצועית שעל הארכיונאי לעבור עם כל תיק או קבוצת חומרים. 
+        לחצו על כל שלב בתרשים כדי לראות את ההוראות הפרטניות ואת ההסתעפויות שלו:
+      </p>
+
+      <div class="flowchart-wrapper">
+        <!-- Step 1 -->
+        <div class="flow-node is-active-step" id="fn-step-1" onclick="showFlowDetail(1)">
+          <div class="flow-node-header">
+            <div style="display:flex; align-items:center; gap:var(--space-xs);">
+              <span class="flow-step-num">1</span>
+              <span class="flow-node-title">מבחן הזמן: האם כל החומרים בתיק נוצרו לפני 100 שנה ויותר?</span>
+            </div>
+            <span class="tag">סף 1926</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            בדיקת תיארוך החומר העדכני ביותר בתיק.
+          </p>
+          <div class="flow-branches">
+            <span class="branch-pill branch-pill--yes">כן ➔ סיום: "אין מגבלת פרטיות" (פתוח באופן מלא)</span>
+            <span class="branch-pill branch-pill--no">לא ➔ מעבר לשלב 2</span>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flow-node" id="fn-step-2" onclick="showFlowDetail(2)">
+          <div class="flow-node-header">
+            <div style="display:flex; align-items:center; gap:var(--space-xs);">
+              <span class="flow-step-num">2</span>
+              <span class="flow-node-title">מבחן מושא המידע: האם התיק כולל מידע אודות אדם ספציפי שניתן לזיהוי?</span>
+            </div>
+            <span class="tag">אדם מול תאגיד</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            זיהוי האם המידע נוגע לאדם פרטי, לתאגיד/מוסד, או שמדובר במידע אנונימי לחלוטין.
+          </p>
+          <div class="flow-branches">
+            <span class="branch-pill branch-pill--yes">לא (תאגיד / אנונימי / אובייקט בלבד) ➔ סיום: "אין מגבלת פרטיות"</span>
+            <span class="branch-pill branch-pill--no">כן (מידע על אדם מזוהה) ➔ מעבר לשלב 3</span>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flow-node" id="fn-step-3" onclick="showFlowDetail(3)">
+          <div class="flow-node-header">
+            <div style="display:flex; align-items:center; gap:var(--space-xs);">
+              <span class="flow-step-num">3</span>
+              <span class="flow-node-title">מבחן הפטירה, הפרסום וההסכמה בכתב</span>
+            </div>
+            <span class="tag">עילות פטור</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            האם כל מושאי המידע נפטרו? האם הפריט פורסם בעבר בוודאות (עיתון/כרזה)? האם ניתנה הסכמה בכתב?
+          </p>
+          <div class="flow-branches">
+            <span class="branch-pill branch-pill--yes">כן (ללא השלכה פוגענית על שארים) ➔ "אין מגבלת פרטיות"</span>
+            <span class="branch-pill branch-pill--no">לא / לא ידוע ➔ מעבר לשלב 4</span>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="flow-node" id="fn-step-4" onclick="showFlowDetail(4)">
+          <div class="flow-node-header">
+            <div style="display:flex; align-items:center; gap:var(--space-xs);">
+              <span class="flow-step-num">4</span>
+              <span class="flow-node-title">מבחן הבדיקה הפרטנית (שיקולי עלות-תועלת)</span>
+            </div>
+            <span class="tag">נבדק מול לא נבדק</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            האם נבדקה תכולת התיק בפועל על ידי ארכיונאי?
+          </p>
+          <div class="flow-branches">
+            <span class="branch-pill branch-pill--no">לא נבדק & נוצר לפני פחות מ-15 שנה ➔ חסום לעיון (Staff only)</span>
+            <span class="branch-pill branch-pill--no">לא נבדק & נוצר לפני יותר מ-15 שנה ➔ "לא נבדקה פרטיות" (עיון בבניין בלבד)</span>
+            <span class="branch-pill branch-pill--yes">התיק נבדק פרטנית ➔ מעבר לשלב 5</span>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="flow-node" id="fn-step-5" onclick="showFlowDetail(5)">
+          <div class="flow-node-header">
+            <div style="display:flex; align-items:center; gap:var(--space-xs);">
+              <span class="flow-step-num">5</span>
+              <span class="flow-node-title">המבחן המהותי-נזיקי וסיווג הרגישויות הספציפיות</span>
+            </div>
+            <span class="tag">מבחן הפגיעה</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface-variant);">
+            האם החומר מכיל: מידע רפואי/נפשי, מסמכי העסקה/משמעת, מידע פיננסי, ציונים, נתונים עדכניים, עירום, לשון הרע, או יחסי אמון?
+          </p>
+          <div class="flow-branches">
+            <span class="branch-pill branch-pill--no">כן, קיים חשש לפגיעה ➔ סימון ערך ספציפי ב-952$f וסגירה לעיון (Staff only)</span>
+            <span class="branch-pill branch-pill--yes">לא, אין פוטנציאל ביזוי/נזק ➔ "אין מגבלת פרטיות"</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Box for selected step -->
+      <div id="flow-step-detail" class="inset-panel" style="margin-top:var(--space-lg);">
+        <h4 id="flow-detail-title" style="font-weight:800; color:var(--primary); margin-bottom:var(--space-xs);">
+          שלב 1: מבחן הזמן (כלל 100 השנים)
+        </h4>
+        <div id="flow-detail-body" style="font-size:0.875rem;">
+          אם כלל החומרים בתיק נוצרו לפני 100 שנה ויותר (עד שנת 1926 כולל), החומר פטור מבדיקת פרטיות. רשמו בשדה 952$f את הערך <code>אין מגבלת פרטיות</code> והתיק יהיה פתוח באופן מלא באינטרנט ובבניין (בכפוף למצב זכויות היוצרים).
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================================
+       TAB 4: Field Cases, Dilemmas & Practical Simulator
+       ========================================================================= -->
+  <section id="tab-pane-4" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-4">
+    
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title"><i data-lucide="folder-check" style="width:22px;height:22px;"></i> מקרי בוחן מהשטח — פתרונות ודילמות מקצועיות</h2>
+        <span class="tag tag--primary">ניתוח מקרי בוחן ואתיקה</span>
+      </div>
+
+      <p style="margin-bottom: var(--space-md);">
+        להלן ניתוח של מקרים מורכבים מהשטח (פרוטוקולים, התכתבויות, תעודות לימודים, חומרי מלחמה ותצלומים):
+      </p>
+
+      <div class="grid-2col">
+        <!-- Case 1: Protocols -->
+        <div class="case-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="case-title">מקרה 1: פרוטוקולים של ועדת משמעת וועד עובדים</span>
+            <span class="tag tag--warning">פרוטוקולים</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface);">
+            <strong>החומר:</strong> פרוטוקול מדיוני ועדת משמעת של מוסד חינוכי משנת 1998, הכולל תלונות הדדיות, שמות מורים שהושעו ובירור חשד למעילה.
+          </p>
+          <div class="inset-panel" style="margin:0; padding:var(--space-sm) var(--space-md); font-size:0.825rem;">
+            <strong>הכרעה וקיטלוג:</strong><br>
+            • מדובר במסמכי העסקה המכילים פוטנציאל פגיעה חמור בשמם ובפרנסתם של אנשים חיים.<br>
+            • <strong>שדה 952:</strong> <code>952 $$f פרטיות מסמכי העסקה</code><br>
+            • <strong>סטטוס הנגשה:</strong> חסום לעיון (Staff only) פיזית ודיגיטלית.<br>
+            • <strong>טיפול אפשרי לחוקר:</strong> השחרת שמות ופרטים מזהים (Redaction) של המעורבים.
+          </div>
+        </div>
+
+        <!-- Case 2: Correspondence -->
+        <div class="case-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="case-title">מקרה 2: תיק התכתבויות אישיות ומכתבי אהבה</span>
+            <span class="tag tag--primary">התכתבויות</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface);">
+            <strong>החומר:</strong> ארכיון סופר הכולל מכתבים אינטימיים שנשלחו אליו בשנות ה-80 על ידי מכרה, הכוללים וידויים אישיים, פרטי בריאות ורכילות פוגענית.
+          </p>
+          <div class="inset-panel" style="margin:0; padding:var(--space-sm) var(--space-md); font-size:0.825rem;">
+            <strong>הכרעה וקיטלוג:</strong><br>
+            • גם אם הסופר הפקיד את הארכיון, הכותבת היא צד שלישי שאינו המפקיד ולא נתנה הסכמה לחשיפת צנעת הפרט שלה.<br>
+            • <strong>שדה 952:</strong> <code>952 $$f פרטיות מידע רגיש</code> (או <code>פרטיות יחסי אמון</code>).<br>
+            • <strong>סטטוס הנגשה:</strong> חסום לעיון (Staff only) עד לבירור פטירת הכותבת או הסכמתה.
+          </div>
+        </div>
+
+        <!-- Case 3: Academic / Certificates -->
+        <div class="case-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="case-title">מקרה 3: תעודות לימודים, גליונות ציונים ומלגות</span>
+            <span class="tag tag--danger">תעודות לימודים</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface);">
+            <strong>החומר:</strong> תיק בארכיון פרופסור באוניברסיטה המכיל גליונות ציונים, עבודות סמינריוניות ובקשות מנומקות למלגות סוציאליות של סטודנטים משנת 2005.
+          </p>
+          <div class="inset-panel" style="margin:0; padding:var(--space-sm) var(--space-md); font-size:0.825rem;">
+            <strong>הכרעה וקיטלוג:</strong><br>
+            • פרטי הישגים לימודיים ובקשות סיוע כלכלי של סטודנטים מוגנים מפורשות.<br>
+            • <strong>שדה 952:</strong> <code>952 $$f פרטיות לימוד והוראה</code><br>
+            • <strong>סטטוס הנגשה:</strong> חסום לעיון (Staff only).
+          </div>
+        </div>
+
+        <!-- Case 4: October 7 & WhatsApp -->
+        <div class="case-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="case-title">מקרה 4: יומן אישי וצילומי ווטסאפ מאירועי 7 באוקטובר</span>
+            <span class="tag tag--danger">תיעוד רגיש / דיגיטלי</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--on-surface);">
+            <strong>החומר:</strong> צילומי מסך מקבוצת ווטסאפ קהילתית בימי הלחימה, הכוללים דיווחים אישיים, שמות של נפגעים ופרטים על מעצרים ופגיעות אזרחיות.
+          </p>
+          <div class="inset-panel" style="margin:0; padding:var(--space-sm) var(--space-md); font-size:0.825rem;">
+            <strong>הכרעה וקיטלוג (לפי מדריך האתיקה):</strong><br>
+            • יש ערך היסטורי בשימור מלא, אך סכנה מיידית למושאים בהנגשה ללא הסכמתם.<br>
+            • <strong>שדה 952:</strong> <code>952 $$f פרטיות מידע רגיש</code><br>
+            • <strong>שדה 520 אינדיקטור 4:</strong> <code>520 4 # $$a עלול להכיל תיאורים קשים</code><br>
+            • <strong>סטטוס:</strong> חסום לעיון (Staff only) לצורך גיבוש גרסה מותממת.
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Quiz for Archivists -->
+      <div class="inset-panel" style="margin-top:var(--space-lg);">
+        <div class="section-header" style="border-bottom:none; margin-bottom:var(--space-xs);">
+          <h3 style="font-size:1.1rem; font-weight:800; color:var(--primary);">
+            <i data-lucide="help-circle" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i>
+            אתגר קבלת החלטות — בדקו את עצמכם
+          </h3>
+          <span id="quiz-score" class="tag tag--primary">שאלה 1 מתוך 3</span>
+        </div>
+
+        <div id="quiz-container">
+          <p id="quiz-question" style="font-weight:700; margin-bottom:var(--space-sm);">
+            בארכיון מועצה אזורית נמצא תיק משנת 1985 הכולל פרוטוקולים מישיבות המועצה הפתוחות, לצד רשימת נתמכי סעד וסיוע כלכלי לחג. מהי ההחלטה התקינה?
+          </p>
+          <div id="quiz-options" style="display:flex; flex-direction:column; gap:var(--space-xs); margin-bottom:var(--space-md);">
+            <button type="button" class="btn btn--secondary" style="text-align:right; justify-content:flex-start;" onclick="checkQuiz(0)">
+              א. לפתוח את התיק במלואו כיוון שמדובר בפרוטוקול של רשות ציבורית.
+            </button>
+            <button type="button" class="btn btn--secondary" style="text-align:right; justify-content:flex-start;" onclick="checkQuiz(1)">
+              ב. לסמן בשדה 952$$f "פרטיות מידע סוציאלי (רווחה)", לחסום כליל (Staff only) ולשקול פיצול או השחרת רשימת הנזקקים.
+            </button>
+            <button type="button" class="btn btn--secondary" style="text-align:right; justify-content:flex-start;" onclick="checkQuiz(2)">
+              ג. להשאיר פתוח בבניין הספרייה בלבד תחת "לא נבדקה פרטיות".
+            </button>
+          </div>
+          <div id="quiz-feedback" style="display:none; padding:var(--space-sm); font-size:0.875rem;"></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================================
+       TAB 5: THE INTERACTIVE WIZARD (MUST BE LAST TAB!)
+       ========================================================================= -->
+  <section id="tab-pane-5" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-5">
+    
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i data-lucide="sparkles" style="width:24px;height:24px;color:var(--primary);"></i>
+          אשף קביעת ערכי הנגשה ופרטיות (סיוע למקטלג)
+        </h2>
+        <span class="tag tag--primary">מנוע הכרעה אוטומטי לרשומות ארכיוניות</span>
+      </div>
+
+      <p style="margin-bottom: var(--space-md); color:var(--on-surface-variant);">
+        הזינו את פרטי התיק והמאפיינים הרלוונטיים. האשף ינתח את המידע על פי מדיניות הספרייה הלאומית, יקבע את סטטוס ההנגשה החוקי, ויפיק שורות MARC 21 מובנות (שדות 952 ו-903) מוכנות להעתקה לקטלוג עלמא.
+      </p>
+
+      <!-- Wizard Form Container -->
+      <form id="wizard-form" onsubmit="event.preventDefault(); calculateWizardDecision();">
+        
+        <div class="grid-2col">
+          
+          <!-- Column A: Metadata & File Nature -->
+          <div>
+            <div class="field-group">
+              <label class="field-label" for="wizard-call-num">סימול התיק (Call Number):</label>
+              <input type="text" id="wizard-call-num" class="field-input" placeholder="למשל: ARC. 4* 1502 01 0001 או D-03744-001-00001">
+              <span class="field-hint">סימול מקומי ייחודי לתיק לפי נוהל הספרייה.</span>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="wizard-file-title">כותרת התיק (Title 245$$a):</label>
+              <input type="text" id="wizard-file-title" class="field-input" placeholder="למשל: פרוטוקולים של ועד עובדים, 1980-1995">
+              <span class="field-hint">ללא נקודה בסוף הכותרת במערכת עלמא.</span>
+            </div>
+
+            <!-- Material Type Dropdown -->
+            <div class="field-group">
+              <label class="field-label" for="wizard-material-type">
+                <span>סוג חומר הארכיון:</span>
+                <span class="tag tag--primary" style="font-size:0.7rem;">כולל אפשרויות מורחבות</span>
+              </label>
+              <select id="wizard-material-type" class="field-select" onchange="onMaterialTypeChange()">
+                <option value="">-- בחר/י סוג חומר ארכיוני --</option>
+                <option value="protocols">פרוטוקולים</option>
+                <option value="correspondence">התכתבויות</option>
+                <option value="academic_records">תעודות לימודים</option>
+                <option value="photos">תצלומים וסרטים</option>
+                <option value="personnel">תיקי עובדים ופרסונל</option>
+                <option value="medical">תיקים רפואיים / בריאותיים</option>
+                <option value="personal_diaries">יומנים אישיים</option>
+                <option value="legal">מסמכים משפטיים וחוזים</option>
+                <option value="financial">דוחות כספיים ומידע פיננסי</option>
+                <option value="ephemera">חולפות / אפמרה (כרזות, תוכניות)</option>
+                <option value="manuscripts">יצירות, כתבי יד וטיוטות ספרותיות</option>
+                <option value="digital_born">חומרים שנולדו דיגיטלית (Born-Digital / ווטסאפ)</option>
+                <option value="adoption_status">מסמכי אימוץ ומעמד אישי</option>
+                <option value="cartographic">חומרים קרטוגרפיים (מפות ותרשימים)</option>
+                <option value="audio_interviews">הקלטות שמע וראיונות שבעל-פה</option>
+                <option value="other">אחר / חומר מעורב</option>
+              </select>
+              <span id="material-type-tip" class="field-hint" style="color:var(--primary); font-weight:700; margin-top:2px;"></span>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="wizard-year">
+                <span>שנת יצירת החומר (העדכנית ביותר בתיק):</span>
+                <span id="year-calc-badge" class="tag tag--positive">יש להזין שנה</span>
+              </label>
+              <input type="number" id="wizard-year" class="field-input" placeholder="למשל: 1978" min="1500" max="2026" oninput="onYearInput(this.value)">
+              <span class="field-hint">השנה תקבע אוטומטית אם חל כלל 100 השנים, 15 השנים או 20 השנים.</span>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="wizard-inspection">האם בוצעה בדיקה פרטנית של תכולת התיק?</label>
+              <select id="wizard-inspection" class="field-select">
+                <option value="inspected">כן, התיק נבדק פרטנית על ידי ארכיונאי/ת</option>
+                <option value="uninspected">לא נבדק (משיקולי עלות-תועלת / ארכיון מרובה תיקים)</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="wizard-deposit-type">מסגרת ההפקדה / בסיס (906):</label>
+              <select id="wizard-deposit-type" class="field-select">
+                <option value="ARC">הפקדה לצמיתות בספרייה הלאומית (ARC)</option>
+                <option value="VIS">האוסף הלאומי לתרבות חזותית (VIS)</option>
+                <option value="REI">רשת ארכיוני ישראל — רישום חוץ (רא"י)</option>
+                <option value="CAHJP">הארכיון המרכזי לתולדות העם היהודי (CAHJP)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Column B: Privacy Criteria & Flags -->
+          <div>
+            <div style="font-family:var(--font-headline); font-weight:800; font-size:1.05rem; color:var(--primary); margin-bottom:var(--space-xs);">
+              בחינת עילות פטור ותכנים רגישים
+            </div>
+            <p class="field-hint" style="margin-bottom:var(--space-sm);">
+              סמנו את כל המאפיינים הרלוונטיים שנמצאו בחומר:
+            </p>
+
+            <!-- Exemption conditions -->
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-published">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">הפריטים פורסמו בעבר בוודאות ברבים</span>
+                <span class="checkbox-sub">כגון כרזות, גזרי עיתונות, ספרים, כתבי עת, מפות (אין מגבלת פרטיות).</span>
+              </div>
+            </label>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-consent">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">ניתנה הסכמה מפורשת בכתב ממושא המידע</span>
+                <span class="checkbox-sub">למשל מפקיד שחתם על שחרור מלא של כל מסמכיו האישיים.</span>
+              </div>
+            </label>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-corporate-only">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">החומר עוסק בתאגיד/מוסד בלבד (ללא מידע על אנשים)</span>
+                <span class="checkbox-sub">דוחות תקציב מוסדיים, פרוטוקולים תאגידיים ללא שמות עובדים.</span>
+              </div>
+            </label>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-deceased">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">כל מושאי המידע נפטרו בוודאות ואין פגיעה במשפחה</span>
+                <span class="checkbox-sub">הזכות פוקעת במות האדם (למעט ענייני אימוץ, ממזרות או ביזוי קרובים).</span>
+              </div>
+            </label>
+
+            <!-- Sensitive content categories -->
+            <div style="font-weight:700; font-size:0.9rem; color:var(--error); margin:var(--space-sm) 0 4px;">
+              תכנים רגישים המחייבים סגירה:
+            </div>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-medical">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">מידע רפואי, בריאותי או נפשי</span>
+                <span class="checkbox-sub">בדיקות, אשפוזים, חוות דעת פסיכיאטריות, מחלות.</span>
+              </div>
+            </label>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-employment">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">מסמכי העסקה, משמעת או פיטורין</span>
+                <span class="checkbox-sub">פרוטוקול ועדת משמעת, חוזי שכר, תלונות הדדיות בין עובדים.</span>
+              </div>
+            </label>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-academic">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">תעודות לימודים, ציונים ומלגות (הוראה ולימוד)</span>
+                <span class="checkbox-sub">גליונות ציונים, הערכות מרצים, בקשות למלגות סוציאליות.</span>
+              </div>
+            </label>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-financial">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">מידע פיננסי אישי או חובות</span>
+                <span class="checkbox-sub">תדפיסי בנק, דוחות שומה, הליכי הוצאה לפועל.</span>
+              </div>
+            </label>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-personal-data">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">נתונים אישיים עדכניים (מ-20 השנים האחרונות)</span>
+                <span class="checkbox-sub">מספרי ת.ז., חשבונות בנק, כתובת, מספרי טלפון פעילים.</span>
+              </div>
+            </label>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-nudity">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">תצלום עירום מלא או חלקי של אדם מזוהה</span>
+                <span class="checkbox-sub">איברי מין/עכוז, גם במרחב ציבורי, או כל עירום של קטין.</span>
+              </div>
+            </label>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-defamation">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">מידע משפיל, מבזה או לשון הרע</span>
+                <span class="checkbox-sub">אמירות פוגעניות, תצלום בתנוחה משפילה, חשיפת מידע מביך.</span>
+              </div>
+            </label>
+
+            <label class="checkbox-item">
+              <input type="checkbox" id="check-trauma-advice">
+              <div class="checkbox-label-wrap">
+                <span class="checkbox-title">תיעוד טראומטי / תיאורים קשים (מחייב אזהרת תוכן)</span>
+                <span class="checkbox-sub">יוסיף אוטומטית שדה 520 4# "עלול להכיל תיאורים קשים".</span>
+              </div>
+            </label>
+
+            <!-- Custodial Embargo (952$i) -->
+            <div class="field-group" style="margin-top:var(--space-sm);">
+              <label class="field-label" for="wizard-embargo">חיסיון מפקיד או צו בית משפט (952$$i):</label>
+              <input type="text" id="wizard-embargo" class="field-input" placeholder="למשל: חיסיון מפקיד עד 2040 או חיסיון צו בית משפט עד 2050">
+              <span class="field-hint">השאירו ריק אם אין חיסיון חוזי מיוחד.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard Action Buttons -->
+        <div class="btn-row" style="margin-top:var(--space-md); padding-top:var(--space-md); border-top:2px solid var(--outline);">
+          <button type="submit" class="btn"><i data-lucide="play" style="width:16px;height:16px;"></i> חשב הכרעת הנגשה ופרטיות</button>
+          <button type="button" class="btn btn--secondary" onclick="resetWizard()"><i data-lucide="rotate-ccw" style="width:16px;height:16px;"></i> אפס שדות</button>
+        </div>
+
+      </form>
+
+      <!-- Wizard Result Box -->
+      <div id="wizard-result-box" class="result-card" style="display:none;" aria-live="polite">
+        <div class="result-header">
+          <div>
+            <div style="font-size:var(--label-size); color:var(--on-surface-variant); font-weight:700;">הכרעת האשף לקטלוג עלמא:</div>
+            <div id="result-badge-container">
+              <!-- Dynamic status badge -->
+            </div>
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn btn--sm" onclick="copyResultMarc()"><i data-lucide="copy" style="width:14px;height:14px;"></i> העתק שדות MARC 21</button>
+            <button type="button" class="btn btn--secondary btn--sm" onclick="saveRecordToLog()"><i data-lucide="save" style="width:14px;height:14px;"></i> שמור ביומן הרישום</button>
+          </div>
+        </div>
+
+        <!-- Output MARC Lines -->
+        <div style="font-weight:700; font-size:0.9rem; color:var(--primary); margin-bottom:4px;">
+          שורות MARC 21 להדבקה ברשומה הביבליוגרפית (עלמא):
+        </div>
+        <div id="result-marc-lines" class="code-box">
+          <!-- Formatted lines generated here -->
+        </div>
+
+        <!-- Rationale & Explanations -->
+        <div class="inset-panel" style="margin:var(--space-sm) 0;">
+          <div style="font-weight:800; color:var(--primary); margin-bottom:4px;">נימוק משפטי ומקצועי להכרעה:</div>
+          <div id="result-rationale" style="font-size:0.875rem;"></div>
+        </div>
+
+        <!-- Next Actions Checklist for Cataloger -->
+        <div style="margin-top:var(--space-md); font-size:0.875rem;">
+          <div style="font-weight:800; color:var(--on-surface); margin-bottom:4px;">צעדים נדרשים להמשך טיפול:</div>
+          <ul id="result-actions" style="padding-right:var(--space-md); color:var(--on-surface);">
+            <!-- Dynamic checklist -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Cataloging Activity Log -->
+      <div style="margin-top:var(--space-2xl); border-top:2px solid var(--outline); padding-top:var(--space-md);">
+        <div class="section-header" style="border-bottom:none;">
+          <h3 style="font-size:1.1rem; font-weight:800; color:var(--primary);"><i data-lucide="clipboard-list" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> יומן תיקים שנבדקו בפרויקט הנוכחי</h3>
+          <div class="btn-row">
+            <button type="button" class="btn btn--secondary btn--sm" onclick="exportLogCsv()"><i data-lucide="download" style="width:14px;height:14px;"></i> ייצוא ל-CSV</button>
+            <button type="button" class="btn btn--secondary btn--sm" onclick="clearLog()"><i data-lucide="trash" style="width:14px;height:14px;"></i> נקה יומן</button>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="ruled-table" id="catalog-log-table">
+            <thead>
+              <tr>
+                <th>תאריך בדיקה</th>
+                <th>סימול תיק</th>
+                <th>כותרת</th>
+                <th>סוג חומר</th>
+                <th>שנה</th>
+                <th>ערך שדה 952</th>
+                <th>סטטוס הנגשה</th>
+              </tr>
+            </thead>
+            <tbody id="catalog-log-body">
+              <tr>
+                <td colspan="7" style="text-align:center; color:var(--on-surface-variant); padding:var(--space-lg);">
+                  עדיין לא נשמרו תיקים ביומן. הריצו את האשף ולחצו על "שמור ביומן הרישום".
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+<!-- Toast element -->
+<div id="toast-msg" class="toast">
+  <i data-lucide="check-circle" style="width:18px;height:18px;"></i>
+  <span id="toast-text">הועתק בהצלחה ללוח!</span>
+</div>
+
+<script>
+  let activeTabId = 1;
+  let catalogLog = [];
+  let currentQuizStep = 0;
+  let quizScore = 0;
+
+  const quizQuestions = [
+    {
+      q: `בארכיון מועצה אזורית נמצא תיק משנת 1985 הכולל פרוטוקולים מישיבות המועצה הפתוחות, לצד רשימת נתמכי סעד וסיוע כלכלי לחג. מהי ההחלטה התקינה?`,
+      opts: [
+        `א. לפתוח את התיק במלואו כיוון שמדובר בפרוטוקול של רשות ציבורית.`,
+        `ב. לסמן בשדה 952$$f "פרטיות מידע סוציאלי (רווחה)", לחסום כליל (Staff only) ולשקול פיצול או השחרת רשימת הנזקקים.`,
+        `ג. להשאיר פתוח בבניין הספרייה בלבד תחת "לא נבדקה פרטיות".`
+      ],
+      correct: 1,
+      exp: `נכון מאד! למרות שפרוטוקול של רשות ציבורית אינו חסוי, שילוב של רשימת נזקקי רווחה עם שמות פוגע בצנעת הפרט. יש לסגור ב"פרטיות מידע סוציאלי (רווחה)" Staff only, או לבצע השחרה של שמות הנזקקים.`
+    },
+    {
+      q: `נמצא תיק התכתבות משנת 1915 הכולל מכתבים אישיים בין בני זוג עם תיאורים אינטימיים. מהו הרישום הנדרש?`,
+      opts: [
+        `א. לחסום את התיק תחת "פרטיות מידע רגיש".`,
+        `ב. לרשום בשדה 952$$f "אין מגבלת פרטיות" כיוון שחל עליו כלל 100 השנים (נוצר לפני 1926).`,
+        `ג. להמתין לאישור ועדת הנגשה ומנכ"ל הספרייה.`
+      ],
+      correct: 1,
+      exp: `מדויק! כלל 100 השנים קובע חזקה חלוטה: חומרים שנוצרו לפני 100 שנה ויותר מקבלים "אין מגבלת פרטיות" ופתוחים לחוקרים ללא חשש לפגיעה באנשים חיים.`
+    },
+    {
+      q: `תיק תעודות לימודים של בית ספר תיכון משנת 2014 כולל גליונות ציונים ומכתבי הערכה על תלמידים. הארכיון מיועד לעלות לרשת. כיצד לנהוג?`,
+      opts: [
+        `א. לסמן "פרטיות לימוד והוראה" ולחסום כליל (Staff only) מחוץ לבניין ובבניין.`,
+        `ב. לפתוח באינטרנט מכיוון שהתלמידים כבר סיימו את לימודיהם.`,
+        `ג. לרשום הערה בשדה 500 שהציונים אינם רשמיים ולפתוח.`
+      ],
+      correct: 0,
+      exp: `נכון לחלוטין! ציונים והערכות תלמידים מוגדרים מפורשות תחת "פרטיות לימוד והוראה" וחוסמים את התיק לעיון ציבורי. שדה 500 אינו מיועד להערות הנגשה.`
+    }
+  ];
+
+  window.addEventListener('DOMContentLoaded', function() {
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+    updateQuickMarcBuilder();
+    loadLogFromStorage();
+  });
+
+  function switchTab(tabIndex) {
+    activeTabId = tabIndex;
+    for (let i = 1; i <= 5; i++) {
+      const btn = document.getElementById(`tab-btn-${i}`);
+      const pane = document.getElementById(`tab-pane-${i}`);
+      if (btn) {
+        if (i === tabIndex) {
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-selected', 'true');
+        } else {
+          btn.classList.remove('is-active');
+          btn.setAttribute('aria-selected', 'false');
+        }
+      }
+      if (pane) {
+        if (i === tabIndex) {
+          pane.classList.add('is-active');
+        } else {
+          pane.classList.remove('is-active');
+        }
+      }
+    }
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  }
+
+  function toggleDetails(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
+  }
+
+  function showFlowDetail(stepNum) {
+    for (let i = 1; i <= 5; i++) {
+      const node = document.getElementById(`fn-step-${i}`);
+      if (node) {
+        if (i === stepNum) node.classList.add('is-active-step');
+        else node.classList.remove('is-active-step');
+      }
+    }
+
+    const titleEl = document.getElementById('flow-detail-title');
+    const bodyEl = document.getElementById('flow-detail-body');
+    if (!titleEl || !bodyEl) return;
+
+    if (stepNum === 1) {
+      titleEl.textContent = `שלב 1: מבחן הזמן (כלל 100 השנים)`;
+      bodyEl.innerHTML = `אם כלל החומרים בתיק נוצרו לפני 100 שנה ויותר (עד שנת 1926 כולל), החומר פטור מבדיקת פרטיות. רשמו בשדה 952$f את הערך <code>אין מגבלת פרטיות</code> והתיק יהיה פתוח באופן מלא באינטרנט ובבניין (בכפוף למצב זכויות היוצרים).`;
+    } else if (stepNum === 2) {
+      titleEl.textContent = `שלב 2: מבחן הישות ומושא המידע`;
+      bodyEl.innerHTML = `הזכות להגנת הפרטיות חלה על <strong>בני אדם בשר ודם בלבד</strong>. לתאגידים, חברות ומפלגות אין זכות לפרטיות. כמו כן, מידע אנונימי לחלוטין פטור ממגבלת פרטיות.`;
+    } else if (stepNum === 3) {
+      titleEl.textContent = `שלב 3: פטירה, פרסום בעבר והסכמה בכתב`;
+      bodyEl.innerHTML = `אם מושא המידע נפטר, הזכות לפרטיות פוקעת. אם הפריטים פורסמו בעבר ברשות הרבים (עיתונות/כרזות), או שניתנה הסכמה בכתב מהמושא — נרשום <code>אין מגבלת פרטיות</code>.`;
+    } else if (stepNum === 4) {
+      titleEl.textContent = `שלב 4: בדיקה פרטנית מול היעדר בדיקה (סף 15 שנה)`;
+      bodyEl.innerHTML = `באוספים עצומים: חומר מ-15 השנים האחרונות (2011–2026) שלא נבדק <strong>נחסם כליל (Staff only)</strong> תחת <code>פרטיות מידע שטרם נבדק ונוצר ב-15 השנים האחרונות</code>. חומר ישן יותר מ-15 שנה שלא נבדק יקבל <code>לא נבדקה פרטיות</code> וייפתח בבניין בלבד.`;
+    } else if (stepNum === 5) {
+      titleEl.textContent = `שלב 5: המבחן המהותי-נזיקי וסיווג ערך מבוקר`;
+      bodyEl.innerHTML = `כאשר התיק נבדק פרטנית ויש בו מידע אישי: שואלים "האם הפרסום יגרום להשפלה, ביזוי או פגיעה במוניטין ובפרנסה?". אם כן — בוחרים את הערך המתאים מתוך הרשימה הסגורה (רפואי, העסקה, לימוד והוראה, פיננסי, עירום, נתונים אישיים) והתיק נחסם (Staff only).`;
+    }
+  }
+
+  function filter952Table(query) {
+    const q = query.trim().toLowerCase();
+    const table = document.getElementById('table-952');
+    if (!table) return;
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = (!q || text.includes(q)) ? '' : 'none';
+    });
+  }
+
+  function updateQuickMarcBuilder() {
+    const sel = document.getElementById('quick-field-sel');
+    const container = document.getElementById('quick-field-controls');
+    if (!sel || !container) return;
+
+    const val = sel.value;
+    container.innerHTML = '';
+
+    if (val === '952') {
+      container.innerHTML = `
+        <select id="quick-952-val" class="field-select" style="min-width:240px;" onchange="renderQuickMarc()">
+          <option value="אין מגבלת פרטיות">אין מגבלת פרטיות</option>
+          <option value="לא נבדקה פרטיות">לא נבדקה פרטיות</option>
+          <option value="פרטיות מידע שטרם נבדק ונוצר ב-15 השנים האחרונות">פרטיות מידע שטרם נבדק ונוצר ב-15 השנים האחרונות</option>
+          <option value="פרטיות מידע רגיש">פרטיות מידע רגיש</option>
+          <option value="פרטיות מסמכי העסקה">פרטיות מסמכי העסקה</option>
+          <option value="פרטיות לימוד והוראה">פרטיות לימוד והוראה</option>
+          <option value="פרטיות מידע רפואי">פרטיות מידע רפואי</option>
+          <option value="פרטיות מידע פיננסי">פרטיות מידע פיננסי</option>
+          <option value="פרטיות נתונים אישיים">פרטיות נתונים אישיים</option>
+        </select>
+        <input type="text" id="quick-952-i" class="field-input" style="width:200px;" placeholder="חיסיון (אופציונלי)" oninput="renderQuickMarc()">
+      `;
+    } else if (val === '903') {
+      container.innerHTML = `
+        <select id="quick-903-a" class="field-select" onchange="renderQuickMarc()">
+          <option value="No restrictions;">No restrictions; (אינטרנט פתוח)</option>
+          <option value="Library premises only;">Library premises only; (בניין בלבד)</option>
+          <option value="Staff only;">Staff only; (צוות בלבד)</option>
+        </select>
+        <select id="quick-903-b" class="field-select" onchange="renderQuickMarc()">
+          <option value="000000001">פרופיל 001 (הורדה ו-API)</option>
+          <option value="000000008">פרופיל 008 (צפייה בבניין בלבד)</option>
+          <option value="000000018">פרופיל 018 (חסום Staff Only)</option>
+        </select>
+      `;
+    } else if (val === '520_4') {
+      container.innerHTML = `
+        <input type="text" id="quick-520-txt" class="field-input" value="עלול להכיל תיאורים קשים" style="min-width:260px;" oninput="renderQuickMarc()">
+      `;
+    } else if (val === '093') {
+      container.innerHTML = `
+        <input type="text" id="quick-093-c" class="field-input" value="ARC. 4* 1502 01 0001" style="width:200px;" placeholder="סימול" oninput="renderQuickMarc()">
+        <input type="text" id="quick-093-d" class="field-input" value="ארכיון שמעון צבר" style="width:200px;" placeholder="שם ארכיון בעברית" oninput="renderQuickMarc()">
+      `;
+    }
+
+    renderQuickMarc();
+  }
+
+  function renderQuickMarc() {
+    const sel = document.getElementById('quick-field-sel');
+    const out = document.getElementById('quick-marc-output');
+    if (!sel || !out) return;
+
+    const val = sel.value;
+    if (val === '952') {
+      const fEl = document.getElementById('quick-952-val');
+      const iEl = document.getElementById('quick-952-i');
+      const fVal = fEl ? fEl.value : `אין מגבלת פרטיות`;
+      const iVal = iEl && iEl.value.trim() ? ` $$i ${iEl.value.trim()}` : ``;
+      out.textContent = `952 $$f ${fVal}${iVal}`;
+    } else if (val === '903') {
+      const aEl = document.getElementById('quick-903-a');
+      const bEl = document.getElementById('quick-903-b');
+      const aVal = aEl ? aEl.value : `No restrictions;`;
+      const bVal = bEl ? bEl.value : `000000001`;
+      out.textContent = `903 $$a ${aVal} $$b ${bVal} $$c In copyright $$d Protected by copyright policy`;
+    } else if (val === '520_4') {
+      const txtEl = document.getElementById('quick-520-txt');
+      const txt = txtEl ? txtEl.value : `עלול להכיל תיאורים קשים`;
+      out.textContent = `520 4 # $$a ${txt}`;
+    } else if (val === '093') {
+      const cEl = document.getElementById('quick-093-c');
+      const dEl = document.getElementById('quick-093-d');
+      const cVal = cEl ? cEl.value.trim() : `ARC. 4* 1502 01 0001`;
+      const dVal = dEl ? dEl.value.trim() : `ארכיון שמעון צבר`;
+      out.textContent = `093 $$c ${cVal} $$d ${dVal}`;
+    }
+  }
+
+  function copyQuickMarc() {
+    const out = document.getElementById('quick-marc-output');
+    if (!out) return;
+    copyTextToClipboard(out.textContent);
+    showToast(`שורת MARC 21 הועתקה בהצלחה!`);
+  }
+
+  function checkQuiz(choiceIndex) {
+    const qData = quizQuestions[currentQuizStep];
+    const feedbackEl = document.getElementById('quiz-feedback');
+    if (!feedbackEl || !qData) return;
+
+    if (choiceIndex === qData.correct) {
+      quizScore++;
+      feedbackEl.style.display = 'block';
+      feedbackEl.style.background = 'var(--positive-container)';
+      feedbackEl.style.color = 'var(--on-positive-container)';
+      feedbackEl.style.borderRight = '4px solid var(--positive)';
+      feedbackEl.innerHTML = `<strong>תשובה נכונה!</strong> ${qData.exp}`;
+    } else {
+      feedbackEl.style.display = 'block';
+      feedbackEl.style.background = '#fde8e8';
+      feedbackEl.style.color = 'var(--error)';
+      feedbackEl.style.borderRight = '4px solid var(--error)';
+      feedbackEl.innerHTML = `<strong>לא מדויק.</strong> ${qData.exp}`;
+    }
+
+    setTimeout(() => {
+      currentQuizStep = (currentQuizStep + 1) % quizQuestions.length;
+      renderQuiz();
+    }, 4500);
+  }
+
+  function renderQuiz() {
+    const qEl = document.getElementById('quiz-question');
+    const optsEl = document.getElementById('quiz-options');
+    const feedbackEl = document.getElementById('quiz-feedback');
+    const scoreEl = document.getElementById('quiz-score');
+    if (!qEl || !optsEl || !scoreEl) return;
+
+    if (feedbackEl) feedbackEl.style.display = 'none';
+    const q = quizQuestions[currentQuizStep];
+    scoreEl.textContent = `שאלה ${currentQuizStep + 1} מתוך ${quizQuestions.length}`;
+    qEl.textContent = q.q;
+
+    optsEl.innerHTML = q.opts.map((opt, idx) => `
+      <button type="button" class="btn btn--secondary" style="text-align:right; justify-content:flex-start;" onclick="checkQuiz(${idx})">
+        ${opt}
+      </button>
+    `).join('');
+  }
+
+  function onMaterialTypeChange() {
+    const sel = document.getElementById('wizard-material-type');
+    const tip = document.getElementById('material-type-tip');
+    if (!sel || !tip) return;
+
+    const val = sel.value;
+    if (val === 'protocols') {
+      tip.textContent = `דגש לפרוטוקולים: אם כוללים דיוני משמעת, תלונות הדדיות, שכר או פיטורין — יש לסמן 'מסמכי העסקה' ולחסום (Staff only).`;
+    } else if (val === 'correspondence') {
+      tip.textContent = `דגש להתכתבויות: מכתבים אישיים בין היוצר לצדדים שלישיים עשויים לפגוע בפרטיות צד ג'.`;
+    } else if (val === 'academic_records') {
+      tip.textContent = `דגש לתעודות לימודים: גליונות ציונים, הערכות מרצים ובקשות למלגות חוסים תחת 'פרטיות לימוד והוראה'.`;
+    } else if (val === 'photos') {
+      tip.textContent = `דגש לתצלומים: תצלום עירום (אפילו במקום ציבורי) או תצלום מבזה מחייב חסימה.`;
+    } else if (val === 'digital_born') {
+      tip.textContent = `דגש ל-Born-Digital/ווטסאפ: שיחות קבוצתיות מכילות צדדים שלישיים. יש לשקול אזהרת תוכן (520 4#).`;
+    } else {
+      tip.textContent = ``;
+    }
+  }
+
+  function onYearInput(yearVal) {
+    const badge = document.getElementById('year-calc-badge');
+    if (!badge) return;
+    const y = parseInt(yearVal, 10);
+    const currentYear = 2026;
+
+    if (!y || isNaN(y) || y < 1500) {
+      badge.textContent = `יש להזין שנה תקינה`;
+      badge.className = 'tag tag--warning';
+      return;
+    }
+
+    const elapsed = currentYear - y;
+    if (elapsed >= 100) {
+      badge.textContent = `נוצר לפני ${elapsed} שנים — חל כלל 100 השנים!`;
+      badge.className = 'tag tag--positive';
+    } else if (elapsed <= 15) {
+      badge.textContent = `נוצר לפני ${elapsed} שנים — סף 15 השנים האחרונות!`;
+      badge.className = 'tag tag--danger';
+    } else if (elapsed <= 20) {
+      badge.textContent = `נוצר לפני ${elapsed} שנים — רלוונטי לכלל 20 שנה (קטינים/נתונים עדכניים)`;
+      badge.className = 'tag tag--warning';
+    } else {
+      badge.textContent = `נוצר לפני ${elapsed} שנים`;
+      badge.className = 'tag tag--primary';
+    }
+  }
+
+  function calculateWizardDecision() {
+    const callNum = document.getElementById('wizard-call-num').value.trim() || `ARC. 4* XXXX`;
+    const title = document.getElementById('wizard-file-title').value.trim() || `תיק ארכיוני ללא כותרת`;
+    const matType = document.getElementById('wizard-material-type').value;
+    const yearVal = parseInt(document.getElementById('wizard-year').value, 10) || 1990;
+    const inspection = document.getElementById('wizard-inspection').value;
+    const depositType = document.getElementById('wizard-deposit-type').value;
+    const embargo = document.getElementById('wizard-embargo').value.trim();
+
+    const published = document.getElementById('check-published').checked;
+    const consent = document.getElementById('check-consent').checked;
+    const corporateOnly = document.getElementById('check-corporate-only').checked;
+    const deceased = document.getElementById('check-deceased').checked;
+
+    const medical = document.getElementById('check-medical').checked;
+    const employment = document.getElementById('check-employment').checked;
+    const academic = document.getElementById('check-academic').checked;
+    const financial = document.getElementById('check-financial').checked;
+    const personalData = document.getElementById('check-personal-data').checked;
+    const nudity = document.getElementById('check-nudity').checked;
+    const defamation = document.getElementById('check-defamation').checked;
+    const traumaAdvice = document.getElementById('check-trauma-advice').checked;
+
+    const currentYear = 2026;
+    const elapsed = currentYear - yearVal;
+
+    let accessLevel = 'open';
+    let privacyVal = 'אין מגבלת פרטיות';
+    let rationale = '';
+    const actions = [];
+    const marcLines = [];
+
+    if (elapsed >= 100) {
+      accessLevel = 'open';
+      privacyVal = 'אין מגבלת פרטיות';
+      rationale = `החומר נוצר לפני ${elapsed} שנים (שנת ${yearVal}). על פי מדיניות הספרייה הלאומית, חומרים שנוצרו לפני 100 שנה ויותר פטורים מבדיקת פרטיות וחלה עליהם חזקת שחרור מלא.`;
+      actions.push(`ניתן להנגיש את התיק במלואו באתר האינטרנט ובבניין הספרייה.`);
+    } else if ((corporateOnly || published || consent) && !nudity && !embargo) {
+      accessLevel = 'open';
+      privacyVal = 'אין מגבלת פרטיות';
+      if (published) {
+        rationale = `התיק כולל חומרים שפורסמו בעבר בוודאות ברבים. מכיוון שאין אלמנט סודיות, לא קיימת מניעת פרטיות.`;
+      } else if (corporateOnly) {
+        rationale = `החומר נוגע לתאגיד או מוסד בלבד. על פי חוק הגנת הפרטיות, לתאגידים אין זכות לפרטיות.`;
+      } else if (consent) {
+        rationale = `ניתנה הסכמה מפורשת בכתב ממושא המידע לפרסום והנגשת החומרים.`;
+      }
+      actions.push(`התיק מוגדר כפתוח לציבור ברשת ובבניין.`);
+    } else if (inspection === 'uninspected') {
+      if (elapsed <= 15) {
+        accessLevel = 'blocked';
+        privacyVal = 'פרטיות מידע שטרם נבדק ונוצר ב-15 השנים האחרונות';
+        rationale = `התיק נוצר ב-15 השנים האחרונות (${yearVal}) ולא נבדק פרטנית. בשל הסיכון הגבוה לפגיעה בפרטיות, התיק נחסם באופן מלא לעיון (Staff only).`;
+        actions.push(`התיק חסום לעיון פיזי ודיגיטלי (Staff only).`);
+        actions.push(`נדרשת בדיקה פרטנית של כל מסמך בתיק לקראת פתיחה.`);
+      } else {
+        accessLevel = 'building';
+        privacyVal = 'לא נבדקה פרטיות';
+        rationale = `התיק נוצר לפני מעל 15 שנה (${yearVal}) ולא נבדקה בו פרטיות. התיק חסום באינטרנט, אך מותר לעיון פיזי של חוקרים בבניין הספרייה.`;
+        actions.push(`התיק פתוח לעיון פיזי בבניין הספרייה בלבד (Library premises only).`);
+      }
+    } else if (medical || employment || academic || financial || personalData || nudity || defamation || matType === 'adoption_status') {
+      accessLevel = 'blocked';
+      if (nudity) privacyVal = 'פרטיות עירום';
+      else if (medical) privacyVal = 'פרטיות מידע רפואי';
+      else if (employment || (matType === 'protocols' && employment)) privacyVal = 'פרטיות מסמכי העסקה';
+      else if (academic || matType === 'academic_records') privacyVal = 'פרטיות לימוד והוראה';
+      else if (financial) privacyVal = 'פרטיות מידע פיננסי';
+      else if (personalData) privacyVal = 'פרטיות נתונים אישיים';
+      else if (defamation) privacyVal = 'פרטיות מידע פוגעני';
+      else privacyVal = 'פרטיות מידע רגיש';
+
+      rationale = `התיק נבדק ונמצא כי הוא כולל מידע אישי מוגן (${privacyVal}). פרסומו עלול לגרום לפגיעה ממשית או ביזוי למושא המידע.`;
+      actions.push(`התיק חסום לעיון פיזי (not for loan) וחסום לצפייה מקוונת (Staff only).`);
+      actions.push(`ניתן לשקול השחרת שמות ופרטים מזהים (Redaction).`);
+    } else if (deceased) {
+      accessLevel = 'open';
+      privacyVal = 'אין מגבלת פרטיות';
+      rationale = `התיק נבדק, מושאי המידע נפטרו ולא אותרה פגיעה ישירה בשאירים החיים.`;
+      actions.push(`ניתן להנגיש את התיק בכפוף לזכויות יוצרים.`);
+    } else {
+      accessLevel = 'open';
+      privacyVal = 'אין מגבלת פרטיות';
+      rationale = `התיק נבדק פרטנית. לא נמצא מידע בעל פוטנציאל השפלה, ביזוי או סיכון נזיקי.`;
+      actions.push(`התיק מאושר להנגשה מלאה.`);
+    }
+
+    let embargoLine = '';
+    if (embargo) {
+      if (accessLevel === 'open') accessLevel = 'blocked';
+      embargoLine = ` $$i ${embargo}`;
+      rationale += ` בנוסף, קיים חיסיון חוזי/משפטי שהוטל על החומר: "${embargo}".`;
+      actions.push(`יש להזין את תאריך פקיעת החיסיון בשדה 952$$i.`);
+    }
+
+    marcLines.push(`952 $$f ${privacyVal}${embargoLine}`);
+
+    if (accessLevel === 'open') {
+      marcLines.push(`903 $$a No restrictions; $$b 000000001 $$c In copyright $$d Protected by copyright policy`);
+    } else if (accessLevel === 'building') {
+      marcLines.push(`903 $$a Library premises only; $$b 000000008 $$c Copyright status not determined $$d No copyright analysis`);
+    } else {
+      marcLines.push(`903 $$a Staff only; $$b 000000018 $$c In copyright $$d Protected by privacy policy`);
+    }
+
+    if (traumaAdvice) {
+      marcLines.push(`520 4 # $$a עלול להכיל תיאורים קשים`);
+      actions.push(`שדה 520 אינדיקטור 4 נוסף לרשומה להצגת אזהרת תוכן.`);
+    }
+
+    marcLines.push(`093 $$c ${callNum} $$d ארכיון הספרייה הלאומית`);
+    marcLines.push(`999 $$a ARCHIVE`);
+
+    renderWizardResult({
+      callNum, title, matType, yearVal, accessLevel, privacyVal, marcLines, rationale, actions
+    });
+  }
+
+  function renderWizardResult(res) {
+    const box = document.getElementById('wizard-result-box');
+    const badgeContainer = document.getElementById('result-badge-container');
+    const marcBox = document.getElementById('result-marc-lines');
+    const rationaleEl = document.getElementById('result-rationale');
+    const actionsEl = document.getElementById('result-actions');
+    if (!box || !badgeContainer || !marcBox || !rationaleEl || !actionsEl) return;
+
+    let badgeHtml = '';
+    if (res.accessLevel === 'open') {
+      badgeHtml = `<span class="status-badge-lg status--open"><i data-lucide="unlock" style="width:20px;height:20px;"></i> פתוח באופן מלא (Open Full — אינטרנט ופיזי)</span>`;
+    } else if (res.accessLevel === 'building') {
+      badgeHtml = `<span class="status-badge-lg status--building"><i data-lucide="building" style="width:20px;height:20px;"></i> פתוח לעיון פיזי בלבד (Building Only — בניין הספרייה)</span>`;
+    } else {
+      badgeHtml = `<span class="status-badge-lg status--blocked"><i data-lucide="lock" style="width:20px;height:20px;"></i> חסום לעיון (Staff Only — חסום פיזית ודיגיטלית)</span>`;
+    }
+    badgeContainer.innerHTML = badgeHtml;
+
+    marcBox.innerHTML = res.marcLines.map(line => {
+      const parts = line.split(' ');
+      const tag = parts[0];
+      const rest = parts.slice(1).join(' ');
+      const formattedRest = rest.replace(/\$\$([a-z0-9])/g, '<span class="marc-sub">\$\$$1</span>');
+      return `<div><span class="marc-tag">${tag}</span> ${formattedRest}</div>`;
+    }).join('');
+
+    rationaleEl.innerHTML = res.rationale;
+    actionsEl.innerHTML = res.actions.map(act => `<li>${act}</li>`).join('');
+
+    box.style.display = 'block';
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function copyResultMarc() {
+    const marcBox = document.getElementById('result-marc-lines');
+    if (!marcBox) return;
+    copyTextToClipboard(marcBox.innerText);
+    showToast(`שדות MARC 21 הועתקו בהצלחה ללוח!`);
+  }
+
+  function resetWizard() {
+    const form = document.getElementById('wizard-form');
+    if (form) form.reset();
+    const box = document.getElementById('wizard-result-box');
+    if (box) box.style.display = 'none';
+    const badge = document.getElementById('year-calc-badge');
+    if (badge) {
+      badge.textContent = `יש להזין שנה`;
+      badge.className = 'tag tag--positive';
+    }
+    const tip = document.getElementById('material-type-tip');
+    if (tip) tip.textContent = '';
+  }
+
+  function saveRecordToLog() {
+    const callNum = document.getElementById('wizard-call-num').value.trim() || `ARC. 4* XXXX`;
+    const title = document.getElementById('wizard-file-title').value.trim() || `תיק ללא כותרת`;
+    const matSel = document.getElementById('wizard-material-type');
+    const matText = matSel && matSel.selectedIndex >= 0 ? matSel.options[matSel.selectedIndex].text : `כללי`;
+    const yearVal = document.getElementById('wizard-year').value || `1990`;
+
+    const marcBox = document.getElementById('result-marc-lines');
+    if (!marcBox || marcBox.innerText.trim() === '') {
+      showToast(`יש להריץ קודם את חישוב האשף.`);
+      return;
+    }
+
+    const marcText = marcBox.innerText;
+    let privacyVal = 'אין מגבלת פרטיות';
+    const fMatch = marcText.match(/952 \$\$f ([^\$\n]+)/);
+    if (fMatch) {
+      privacyVal = fMatch[1].trim();
+    }
+
+    let statusText = 'פתוח מלא';
+    if (marcText.includes('Staff only;')) {
+      statusText = 'חסום Staff Only';
+    } else if (marcText.includes('Library premises only;')) {
+      statusText = 'עיון בבניין בלבד';
+    }
+
+    const newRecord = {
+      id: Date.now(),
+      date: new Date().toLocaleDateString('he-IL'),
+      callNum,
+      title,
+      matText,
+      yearVal,
+      privacyVal,
+      statusText
+    };
+
+    catalogLog.unshift(newRecord);
+    renderLogTable();
+    saveLogToStorage();
+    showToast(`התיק נשמר ביומן הרישום בהצלחה!`);
+  }
+
+  function renderLogTable() {
+    const tbody = document.getElementById('catalog-log-body');
+    if (!tbody) return;
+
+    if (catalogLog.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align:center; color:var(--on-surface-variant); padding:var(--space-lg);">
+            עדיין לא נשמרו תיקים ביומן. הריצו את האשף ולחצו על "שמור ביומן הרישום".
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = catalogLog.map(item => `
+      <tr>
+        <td>${item.date}</td>
+        <td><code>${item.callNum}</code></td>
+        <td><strong>${item.title}</strong></td>
+        <td><span class="tag">${item.matText}</span></td>
+        <td>${item.yearVal}</td>
+        <td><code>${item.privacyVal}</code></td>
+        <td>
+          <span class="tag ${item.statusText.includes('פתוח') ? 'tag--positive' : item.statusText.includes('בניין') ? 'tag--warning' : 'tag--danger'}">
+            ${item.statusText}
+          </span>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function exportLogCsv() {
+    if (catalogLog.length === 0) {
+      showToast(`אין נתונים לייצוא ביומן הרישום.`);
+      return;
+    }
+
+    let csvContent = `תאריך,סימול,כותרת,סוג חומר,שנה,שדה 952 פרטיות,סטטוס הנגשה\n`;
+    catalogLog.forEach(row => {
+      const cleanTitle = row.title.replace(/"/g, '""');
+      csvContent += `"${row.date}","${row.callNum}","${cleanTitle}","${row.matText}","${row.yearVal}","${row.privacyVal}","${row.statusText}"\n`;
+    });
+
+    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'NLI_Archival_Catalog_Privacy_Log.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast(`הקובץ יוצא בהצלחה!`);
+  }
+
+  function clearLog() {
+    catalogLog = [];
+    renderLogTable();
+    saveLogToStorage();
+    showToast(`יומן הרישום נוקה.`);
+  }
+
+  function saveLogToStorage() {
+    try {
+      localStorage.setItem('nli_catalog_log', JSON.stringify(catalogLog));
+    } catch(e) {}
+  }
+
+  function loadLogFromStorage() {
+    try {
+      const saved = localStorage.getItem('nli_catalog_log');
+      if (saved) {
+        catalogLog = JSON.parse(saved);
+        renderLogTable();
+      }
+    } catch(e) {}
+  }
+
+  function copyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      document.execCommand('copy');
+    } catch (err) {}
+    document.body.removeChild(textArea);
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast-msg');
+    const toastTxt = document.getElementById('toast-text');
+    if (!toast || !toastTxt) return;
+
+    toastTxt.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3200);
+  }
+</script>
+
+</body>
+</html>
